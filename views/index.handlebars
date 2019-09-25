@@ -1,0 +1,119 @@
+<section class="jumbotron text-center">
+  <div class="container">
+    <h1 class="jumbotron-heading eb-title">Biz Data Scrape</h1>
+    <p class="lead text-muted">Find businesses below.
+    </p>
+    <p>
+      <a href="/articles" class="btn btn-info my-2">Show businesses</a>
+      <a  id="scrapeStart"  class="btn btn-primary my-2">Run scrape</a>
+      {{!-- id="" --}}
+      <button id="checkScrape" type="button" class="btn btn-info" data-toggle="modal" data-target="#confirmScrapeModal">
+        New scrape
+      </button>
+      
+    </p>
+  </div>
+</section>
+
+<div class="album py-5 bg-light">
+  <div class="container">
+
+    <div class="row">
+
+    {{#each articles}}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <img class="card-img-top" src={{this.img}} alt="Card image cap">
+          <div class="card-body">
+            <h3>{{this.title}}</h3>
+            <p class="card-text text-muted eb-description">{{this.description}}</p>
+            <div class="d-flex flex-column justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href={{this.link}} target="_blank">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">
+                  Source
+                  </button>
+                </a>
+                <button type="button" class="ml-1 btn btn-sm btn-outline-secondary newNotes" article-id="{{this._id}}"
+                  data-toggle="modal" data-target="#newNotesModal">
+                  Add note
+                </button>
+              </div>
+            </div>
+              {{!-- <div> --}}
+                {{#if this.note}}
+                <h3 class="text-center mt-2">Tags</h3>
+                <div class="noteList">
+                  {{#each this.note}}
+                  <div class="noteGroup">
+                    <p class="ml-2">{{this.body}}</p>
+                    <span data-id={{this._id}} class="pl-1 mr-2 remove-item oi oi-trash"><i class="fa fa-trash"></i></span>
+                  </div>
+                  {{/each}}
+                </div>
+                {{/if}}
+              {{!-- </div> --}}
+              <p class="text-center mb-0 mt-1"><small class="text-muted  ">from YellowPages.com</small></p>
+            
+          </div>
+        </div>
+      </div>
+    {{/each}}   
+
+    
+
+
+      <!-- Modal for New Notes -->
+      <div class="modal fade" id="newNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              {{!-- form for text area --}}
+              <div class="form-group">
+                <label for="userTextInput"><strong>Add a tag</strong></label>
+                <textarea class="form-control" id="userTextInput" rows="3"></textarea>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" id="saveNewNote" class="btn btn-primary saveNote">Save tag</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {{!-- Modal to confirm scrape --}}
+      <!-- Button trigger modal -->
+      
+      
+      <!-- Modal -->
+      <div class="modal fade" id="confirmScrapeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Confirm Scrape</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              <span class="text-danger "><strong>Warning</strong></span>
+              <br>
+              Running a scrape will reset current businesses and their tags. Are you sure you want to proceed with a new scrape?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Nope</button>
+              <button id="scrapeStart" type="button" class="btn btn-info">Yes, have a scrape</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

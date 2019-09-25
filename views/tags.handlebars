@@ -1,0 +1,36 @@
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Biz Data 
+        </h1>
+        <p class="lead text-muted">These are the tags that are added to the businesses</p>
+        <p>
+            <a href="articles" class="btn btn-primary my-2">Back to business list</a>
+            <a href="tags" class="btn btn-secondary my-2"><button class="disabled">See tags</button></a>
+        </p>
+    </div>
+</section>
+
+<div class="album py-5 bg-light">
+    <div class="container">
+
+        {{#each tag}}
+        {{!-- #IF only show if there is a note present --}}
+        <div class="row">
+
+            <div class="card">
+                <div class="card-header">
+                    Tag
+                </div>
+                <div class="card-body">
+                    <div class=" mb-0">
+                        <p>{{this.tag.body}}</p>
+                        <footer class="">Source: <a href={{this.link}} target="_blank"><cite title="Source Title">{{this.title}}</cite></a></footer>
+                    </div>
+                </div>
+            </div>  
+        </div>
+        {{!-- /IF only show if there is a note present --}}
+        {{/each}}
+
+    </div>
+</div>

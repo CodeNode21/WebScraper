@@ -11,8 +11,8 @@ Grabbing business info from Yelp or yellowpages.com
 
 ****************************************************
 `);
-var searchTerm = "butcher";
-var zipCode = "11211";
+var searchTerm = "bakery";
+var zipCode = "11222";
 
 // Making a request from yellowbook.com
 axios.get("https://www.yellowbook.com/s/" + searchTerm + "/" + zipCode)
