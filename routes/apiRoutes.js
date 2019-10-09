@@ -1,116 +1,114 @@
+// Dependencies
 const db = require("../models");
-const axios = require("axios");
+// Cheerio for parsing HTML page
 const cheerio = require("cheerio");
+// Axios to make HTTP request for HTML page
+const axios = require("axios");
 
+console.log(`
+***************************************************
+
+Grabbing business info from Yelp or yellowpages.com
+
+****************************************************
+`);
+var searchTerm = "bakery";
+var zipCode = "11222";
 module.exports = function(app) {
-	app.get("/scrapeit", function (req, res) {
-		axios.get("https://www.buzzfeednews.com/")
-		.then(function (response) {
-			const $ =cheerio'load(response.data);
-			$(".newsblock-story-card").each(function (i, element) {
-				let result = {};
-				
-				result.title = $(this)
-				.find(".newsblock-story-card_title")
-				.text().trim();
-				result.img = $(this)
-				.find(".img-wireframe_image")
-				.attr("src");
-				
-				result.description = $(".newsblock-story-card_description")
-				.find(".newsblock-story-card_description")
-				.text().trim();
-				result.link = $(this)
-				.children("a")
-				.attr("href")
-				
-				db.Article.create(result)
-					.then(function (dbArticle) {
-						// nothing else here, but sending a "scrape somplete" at the end
-					})
-					.catch( function (err) {
-						console.log(err);
-					});
-			});
-			
-			res.send("Scrape complete")
-			console.log("Scrape Complete")
-		});
-	});
-	
-	app.get("/articles", function (req, res) {
-		db.Article.find({}).sort({ '_id': -1 }).limit(24)
-		.populate("note")
-		.then(function (dbArticle) {
-			
-			let allArticles = {
-				articles: dbArticcle,
-			}
-			
-			res.render("index", allArticles);
-		}).catch(function (err) {
-			res.json(err);
-		});
-	});
-	
-	app.get("/notes/:id, function (req, res) {
-		console.log("the article id is: " + req.params.id)
-		db.Aricle.findOne({ _id: req.params.id })
-		
-		.populate("note")
-		.then(function (dbArticle) {
-			res.send(dbArticle);
-		})
-		.catch(function (err) {
-			res.json(err);
-		});
-	});
-	
-	app.post("/notes/:id", function (req, res) {
-		console.log(req.body)
-		db.Note.create(req.body)
-			.then(funtion (dbNote) {
-			return db.Article.findOneAndUpdate({ _id: req.params.id }, ( $push: { note: dbNote._id }}, {new: true});
-	})
-	.then(function (dbArticle) {
-		console.log(dbArticle)
-		res.send(dbArticle);
-	
-	.catch(function (err) {
-		res.json(err);
-	
-	});
-});
+    app.get("/scrapeit", function (req, res){
+        // Making a request from yellowbook.com
+        axios.get("https://www.yellowbook.com/s/" + searchTerm + "/" + zipCode)
+            .then(function(response) {
+                var $ = cheerio.load(response.data);
 
-app.put("/articles/note/:id", function (req, res) {
-	db.Note.remove({ _id: req.params.id })
-	.then(function (dbArticle) {
-		res.json(dbArticle);
-	})
-	.catch(function (err) {
-		res.json(err);
-	});
-});
+                var results = [];
 
+                $(".c .listing-info").each(function(i, element) {
+                    var title = $(element).find(".info").find("h2").text().trim();
+                    var website = $(element).find(".s_website").attr("href");
+                    
+                    var address = $(element).find(".address").text();
+
+                    var contact = $(element).find(".phone-number").text();
+
+
+                    results.push({
+                        name: title,
+                        url: website,
+                        address: address,
+                        phoneNumber: contact
+                    });
+                    db.Business.create(results)
+                    .then(function (dbBusiness) {
+
+                    })
+                    .catch( function (err) {
+                        console.log(err)
+                    })
+                });
+                res.send("Scrape complete")
+                console.log(results);
+            })
+
+        // Making a request from Yelp.com
+        // axios.get("https://www.yelp.com/search?find_desc=" + searchTerm + "&find_loc=" + zipCode + "&ns=1")
+        //     .then(function(response) {
+        //         var $ = cheerio.load(response.data);
+
+        //         var results = [];
+
+        //         $("h3").each(function(i, element) {
+        //             var title = $(element).text();
+                
+        //             var link = $(element).children().attr("href");
+
+        //             results.push({
+        //                 title: title,
+        //                 link: link
+        //             });
+        //         });
+        //         console.log(results);
+        //     });
+    })
+    app.get("/Business" , function (req, res) {
+        db.Business.find({}).sort({ '_id': -1 }).limit(24)
+        .populate("note")
+        .then(function (dbBusiness) {
+
+            let allBusinesses = {
+                businesses: dbBusiness,
+            }
+            res.render("index", allBusinesses);
+        }).catch(function (err) {
+            res.json(err);
+        });
+    });
+    app.get("/tags/:id", function (req, res) {
+        console.log("The tag id is: " + req.params.id)
+        db.Business.findOne({ _id: req.params.id })
+
+        .populate("tags")
+        .then(function (dbBusiness) {
+            res.send(dbBusiness);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+    });
+    app.post("/tags/:id", function (req, res) {
+        console.log(req.body)
+        db.Tags.create(req.body)
+            .then(function (dbTags) {
+                return db.Business.findOneAndUpdate({ _id: req.params.id }, { $push: { tag: dbTags._id }}, {new: true});
+            })
+    })
+    app.put("/business/tags/:id", function (req,res) {
+        db.Tags.remove({ _id: req.params.id })
+        .then(function (dbBusiness) {
+            res.json(dbBusiness);
+        })
+        .catch(function (err) {
+            res.json(err);
+        })
+    })
 }
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-				

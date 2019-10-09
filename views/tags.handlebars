@@ -4,7 +4,7 @@
         </h1>
         <p class="lead text-muted">These are the tags that are added to the businesses</p>
         <p>
-            <a href="articles" class="btn btn-primary my-2">Back to business list</a>
+            <a href="businesses" class="btn btn-primary my-2">Back to business list</a>
             <a href="tags" class="btn btn-secondary my-2"><button class="disabled">See tags</button></a>
         </p>
     </div>
@@ -14,7 +14,7 @@
     <div class="container">
 
         {{#each tag}}
-        {{!-- #IF only show if there is a note present --}}
+        {{!-- #IF only show if there is a tag present --}}
         <div class="row">
 
             <div class="card">
@@ -29,7 +29,7 @@
                 </div>
             </div>  
         </div>
-        {{!-- /IF only show if there is a note present --}}
+        {{!-- /IF only show if there is a tag present --}}
         {{/each}}
 
     </div>

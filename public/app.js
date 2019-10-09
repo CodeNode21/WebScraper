@@ -1,14 +1,13 @@
 $(document).ready(function() {
 	const $scrapeStart = $("#scrapeStart");
-	const $openSavedNotes = $(".openNotes");
-	const $openNewNotes = $(".newNotes");
-	const $SaveNote = $("#saveNewNote");
-	const $checkScrape = $("#checkScrape");
+	const $openSavedTags = $(".openTags");
+	const $openNewTags = $(".newTags");
+	const $SaveTag = $("#saveNewTag");
 	
 	$scrapeStart.on("click", handleScrape);
-	$openSavedNotes.on("click", openNoteModal);
-	$openNewNotes.on("click", openNewNoreModal);
-	$SaveNote.on("click", getNoteInput);
+	$openSavedTags.on("click", openTagModal);
+	$openNewTags.on("click", openNewTagModal);
+	$SaveTag.on("click", getTagInput);
 	
 	function handleScrape() {
 		
@@ -24,7 +23,7 @@ $(document).ready(function() {
 	}
 	
 	function openTagModal() {
-		let id = $(this).attr("article-id")
+		let id = $(this).attr("tag-id")
 		
 		return $.ajax({
 			type: "GET",
@@ -33,18 +32,18 @@ $(document).ready(function() {
 		}).then(function(data) {
 			console.log(data)
 			let tagBody = $("#tagBody");
-			let dbNote = data.tag
+			let dbTag = data.tag
 			let businessId = data._id
 			
-			tagBody.attr("article-id, articleId)
-			tagBody.write(dbNote)
+			tagBody.attr("tag-id", businessId)
+			tagBody.write(dbTag)
 			$("#savedTagsModal").modal("hide")
 			
 		})
 	}
 	
-	function openTagModal() {
-		let id = $(this).attr("article-id")
+	function openNewTagModal() {
+		let id = $(this).attr("tag-id")
 		$("#saveNewTag").attr("data-id", id)
 	}
 	

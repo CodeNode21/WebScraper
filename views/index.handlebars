@@ -4,7 +4,7 @@
     <p class="lead text-muted">Find businesses below.
     </p>
     <p>
-      <a href="/articles" class="btn btn-info my-2">Show businesses</a>
+      <a href="/business" class="btn btn-info my-2">Show businesses</a>
       <a  id="scrapeStart"  class="btn btn-primary my-2">Run scrape</a>
       {{!-- id="" --}}
       <button id="checkScrape" type="button" class="btn btn-info" data-toggle="modal" data-target="#confirmScrapeModal">
@@ -20,7 +20,7 @@
 
     <div class="row">
 
-    {{#each articles}}
+    {{#each businesses}}
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
           <img class="card-img-top" src={{this.img}} alt="Card image cap">
@@ -34,18 +34,18 @@
                   Source
                   </button>
                 </a>
-                <button type="button" class="ml-1 btn btn-sm btn-outline-secondary newNotes" article-id="{{this._id}}"
-                  data-toggle="modal" data-target="#newNotesModal">
-                  Add note
+                <button type="button" class="ml-1 btn btn-sm btn-outline-secondary newtags" business-id="{{this._id}}"
+                  data-toggle="modal" data-target="#newTagsModal">
+                  Add tag
                 </button>
               </div>
             </div>
               {{!-- <div> --}}
-                {{#if this.note}}
+                {{#if this.tag}}
                 <h3 class="text-center mt-2">Tags</h3>
-                <div class="noteList">
-                  {{#each this.note}}
-                  <div class="noteGroup">
+                <div class="tagList">
+                  {{#each this.tags}}
+                  <div class="tagGroup">
                     <p class="ml-2">{{this.body}}</p>
                     <span data-id={{this._id}} class="pl-1 mr-2 remove-item oi oi-trash"><i class="fa fa-trash"></i></span>
                   </div>
@@ -63,8 +63,8 @@
     
 
 
-      <!-- Modal for New Notes -->
-      <div class="modal fade" id="newNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      <!-- Modal for New tags -->
+      <div class="modal fade" id="newtagsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
@@ -78,7 +78,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" id="saveNewNote" class="btn btn-primary saveNote">Save tag</button>
+              <button type="button" id="saveNewtag" class="btn btn-primary savetag">Save tag</button>
             </div>
           </div>
         </div>

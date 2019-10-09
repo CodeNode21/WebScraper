@@ -1,62 +1,39 @@
-// Dependencies
-// Cheerio for parsing HTML page
-const cheerio = require("cheerio");
-// Axios to make HTTP request for HTML page
-const axios = require("axios");
+var express = require("express");
+var exphbs = require("express-handlebars");
+var logger = require("morgan");
+var mongoose = require("mongoose");
 
-console.log(`
-***************************************************
+var PORT = process.env.PORT || 3030;
 
-Grabbing business info from Yelp or yellowpages.com
-
-****************************************************
-`);
-var searchTerm = "bakery";
-var zipCode = "11222";
-
-// Making a request from yellowbook.com
-axios.get("https://www.yellowbook.com/s/" + searchTerm + "/" + zipCode)
-    .then(function(response) {
-        var $ = cheerio.load(response.data);
-
-        var results = [];
-
-        $(".c .listing-info").each(function(i, element) {
-            var title = $(element).find(".info").find("h2").text();
-            var website = $(element).find(".s_website").attr("href");
-            
-            var address = $(element).find(".address").text();
-
-            var contact = $(element).find(".phone-number").text();
+// Initialize Express
+var app = express();
 
 
-            results.push({
-                name: title,
-                url: website,
-                address: address,
-                phoneNumber: contact
-            });
-        });
-        console.log(results);
+// Configure middleware
+app.use(logger("dev"));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static("public"));
+
+// Handlebars
+app.engine(
+    "handlebars",
+    exphbs({
+        defaultLayout: "main"
     })
+);
+app.set("view engine", "handlebars");
 
-// Making a request from Yelp.com
-// axios.get("https://www.yelp.com/search?find_desc=" + searchTerm + "&find_loc=" + zipCode + "&ns=1")
-//     .then(function(response) {
-//         var $ = cheerio.load(response.data);
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-//         var results = [];
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
-//         $("h3").each(function(i, element) {
-//             var title = $(element).text();
-        
-//             var link = $(element).children().attr("href");
+require("./routes/apiRoutes")(app);
+require("./routes/htmlRoutes")(app);
 
-//             results.push({
-//                 title: title,
-//                 link: link
-//             });
-//         });
-//         console.log(results);
-//     });
 
+// localhost listening
+app.listen(PORT, function () {
+    console.log("App listening on http://localhost:" + PORT);
+});
