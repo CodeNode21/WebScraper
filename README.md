@@ -9,16 +9,16 @@ Remove tags
 Remove Business info if desired.
 
  {
- 	"name" : "The Meat Hook",
- 	"website" : "www.the-meathook.com",
+ 	"name" : "Business Name",
+ 	"website" : "www.the-website.com",
  	"address" : {
  		"Address Building" : "397",
- 		"Address Street Name" : "Graham Ave",
+ 		"Address Street Name" : " Ave",
  		"Addres City" : "Brooklyn", 
  		"Address State" : "NY",
  		"ZIP" :	"11211",
  		}
- 	"Contact Phone Number" : "718 609 9300"
+ 	"Contact Phone Number" : "718 777 7777"
  	"brixbiz Registered: false,
  	"Inventory Listed": false,
  	"Business Type" : [
