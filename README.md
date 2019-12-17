@@ -32,5 +32,5 @@ Remove Business info if desired.
  		"Cheese"
  		] 
  }
-
+![app Gif](bizScraper.gif)
 
