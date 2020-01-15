@@ -1,8 +1,5 @@
-// Dependencies
 const db = require("../models");
-// Cheerio for parsing HTML page
 const cheerio = require("cheerio");
-// Axios to make HTTP request for HTML page
 const axios = require("axios");
 
 console.log(`
@@ -16,7 +13,6 @@ var searchTerm = "bakery";
 var zipCode = "11222";
 module.exports = function(app) {
     app.get("/scrapeit", function (req, res){
-        // Making a request from yellowbook.com
         axios.get("https://www.yellowbook.com/s/" + searchTerm + "/" + zipCode)
             .then(function(response) {
                 var $ = cheerio.load(response.data);
