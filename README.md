@@ -1,4 +1,4 @@
-# 18-WebScraper
+# Business Info WebScraper
 
 With this app we're scraping the internet to get data on businesses in specified areas.
 
