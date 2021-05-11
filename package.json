@@ -19,9 +19,9 @@
   "homepage": "https://github.com/CodeNode21/18-WebScraper#readme",
   "dependencies": {
     "axios": "^0.19.2",
-    "cheerio": "^1.0.0-rc.3",
+    "cheerio": "^1.0.0-rc.9",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
-    "mongoose": "^5.9.25"
+    "mongoose": "^5.12.8"
   }
 }
